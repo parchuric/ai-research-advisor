@@ -29,6 +29,7 @@ The application employs a multi-agent system orchestrated by LangGraph. Each age
    - **`PlannerAgent`**: Takes the original query, deconstructed sub-queries, and retrieved information to generate a structured `ResearchPlan`. This plan outlines steps and synthesis questions to guide the user.
    - **`SummarizerAgent`**: Processes the retrieved information to generate a concise `SummarizedOutput`, including a summary text and key bullet points.
    - **`FeedbackAgent`**: A simple agent (not part of the main research graph) that records user feedback (text and rating) about the research results into a log file (`user_feedback.log`).
+   - **`FeedbackAnalyzerAgent`**: Analyzes the stored feedback to provide insights like average ratings and qualitative summaries.
 
 ### 4. Agent-to-Agent (A2A) Communication
 In LangGraph, A2A communication is implicitly handled through the shared `ResearchGraphState`.
@@ -58,26 +59,33 @@ ai_research_advisor/
 │   ├── agents/             # Contains individual agents for different tasks
 │   │   ├── __init__.py
 │   │   ├── deconstructor_agent.py
-│   │   ├── feedback_agent.py       # Handles user feedback
+│   │   ├── feedback_agent.py       # Handles user feedback logging
+│   │   ├── feedback_analyzer_agent.py # Analyzes stored feedback
 │   │   ├── planner_agent.py        # Generates research plans
 │   │   ├── retriever_agent.py    # Retrieves information (uses Tavily)
 │   │   └── summarizer_agent.py     # Summarizes information
 │   ├── core/               # Core components like configuration
 │   │   ├── __init__.py
-│   │   └── config.py       # Loads environment variables (API keys)
+│   │   └── config.py       # Loads environment variables (API keys), initializes LLM
 │   ├── graph/              # LangGraph specific logic
 │   │   ├── __init__.py
 │   │   └── research_graph.py # Defines the research workflow graph and its state
 │   └── schemas/            # Pydantic models for API request/response validation
 │       ├── __init__.py
 │       └── research_schemas.py
-├── sessions/               # Stores persisted research session JSON files
-│   └── example_session.json
+├── docs/
+│   └── images/
+│       └── MultiAgentArchitecture-ResearchAgent.png # Architecture diagram
+├── sessions/               # Stores persisted research session JSON files (GIT IGNORED)
+│   └── example_session.json # Example, actual files are gitignored
 ├── ui/                     # Frontend Streamlit application
 │   └── streamlit_app.py    # Streamlit UI code
 ├── .env                    # Environment variables (API keys, etc.) - GIT IGNORED
+├── .env.sample             # Example environment file for users to copy
+├── .gitignore              # Specifies intentionally untracked files that Git should ignore
+├── LICENSE                 # MIT License file
 ├── requirements.txt        # Python dependencies
-├── user_feedback.log       # Log file for user feedback
+├── user_feedback.log       # Log file for user feedback (GIT IGNORED)
 └── README.md               # This file
 ```
 
