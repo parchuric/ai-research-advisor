@@ -142,6 +142,7 @@ venv.bak/
 .env*
 !example.env
 !template.env
+!.env.sample
 
 # OS generated files
 .DS_Store
